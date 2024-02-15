@@ -20,20 +20,21 @@
             android:exported="false" />
         <activity
             android:name=".Login"
-            android:exported="false" />
-        <activity
-            android:name=".AddPost"
-            android:exported="false" />
-        <activity
-            android:name=".HomePageActivity"
-            android:exported="true"
-            android:label="@string/title_activity_home_page"
-            android:theme="@style/Theme.Fakebooc.NoActionBar">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".AddPost"
+            android:exported="false" />
+        <activity
+            android:name=".HomePageActivity"
+            android:exported="false"
+            android:label="@string/fakebooc"
+            android:theme="@style/Theme.Fakebooc.NoActionBar">
         </activity>
 
         <meta-data
