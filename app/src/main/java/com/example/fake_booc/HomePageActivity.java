@@ -47,11 +47,11 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_home_page);
 
         User.addUsers(createDefaultUsers());
-        User.getRegisteredUsers().get(0).signIn();
-
         findViews();
 
         fabClickListener();
