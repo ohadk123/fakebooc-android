@@ -14,10 +14,13 @@ import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
@@ -62,6 +65,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
@@ -71,12 +75,23 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class Register extends AppCompatActivity {
+
+
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int CAMERA_PERMISSION_CODE = 100;
+    private String currentPhotoPath;
+
     Button btnPickImage;
     Button signUpBtn ;
     String path;
     Uri uri;
+    String dlog="test";
     ImageView imgV;
     ActivityResultLauncher<Intent>resultLauncher;
     @Override
@@ -85,11 +100,12 @@ public class Register extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         btnPickImage=findViewById(R.id.btnPickImage);
         imgV=findViewById(R.id.img);
-        registerResult();
+//        registerResult();
         signUpBtn = findViewById(R.id.AsignUpBtn);
 
         signUpBtn.setOnClickListener(view -> handleSignUp());
         btnPickImage.setOnClickListener(view -> pickImage());
+
 
     }
 
@@ -235,55 +251,174 @@ public class Register extends AppCompatActivity {
         String path = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "Title", null);
         return Uri.parse(path);
     }
+    private boolean checkCameraPermission() {
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestCameraPermission() {
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, CAMERA_PERMISSION_CODE);
+    }
+
+
+
+    private File createImageFile() throws IOException {
+
+//         Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+
+        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
+
+
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+
+//        private void pickImage() {
+//            // Check for camera permission
+//            if (checkCameraPermission()) {
+//
+//            } else {
+//                requestCameraPermission();
+//            }
+//
+//            // Intent for picking an image from the gallery
+//            Intent pickPhotoIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//// Intent for taking a new picture with the camera
+//            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//            List<Intent> intentList = new ArrayList<>();
+//            intentList.add(pickPhotoIntent);
+//
+//            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+//                File photoFile = null;
+//                try {
+//                    photoFile = createImageFile();
+//
+//                    if (photoFile != null) {
+//                        Uri photoURI = FileProvider.getUriForFile(this, "com.example.fake_booc.fileProvider", photoFile);
+//                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+//                        intentList.add(takePictureIntent);
+//
+//                    }else{
+//                        Toast.makeText(this, "Error occurred while creating the file", Toast.LENGTH_SHORT).show();
+//                    }
+//                } catch (IOException ex) {
+//                    Toast.makeText(this, "Error occurred while creating the file", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//            // Check if we have at least one intent to show
+//            if (!intentList.isEmpty()) {
+//                // Create a chooser with the first intent
+//                Intent chooserIntent = Intent.createChooser(intentList.remove(0), "Select Image or Take Photo");
+//
+//                // Convert the rest of the intents list into an array
+//                Intent[] extraIntents = intentList.toArray(new Intent[0]);
+//
+//                // Add the rest of the intents as extra initial intents
+//                chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, extraIntents);
+//
+//                // Launch the chooser
+//                resultLauncher.launch(chooserIntent);
+//        } else {
+//            // Handle the case where no intents are available
+//            Log.d("pickImage", "No intents available");
+//        }
+//    }
+
+
+    enum Option {
+        CAMERA,
+        GALLERY
+    }
+
+    private void showDialog() {
+        // Options to be displayed in the dialog
+        final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
+
+        // Creating the AlertDialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(Register.this);
+        builder.setTitle("Select Option");
+
+        // Setting the options and handling clicks
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (options[item].equals("Take Photo")) {
+                    // User chose to take a picture
+                    File photoFile = null;
+                    try {
+                        photoFile = createImageFile();
+                        if (photoFile != null) {
+                            Uri photoURI = FileProvider.getUriForFile(Register.this, "com.example.fake_booc.fileProvider", photoFile);
+                            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                            cameraLauncher.launch(takePictureIntent);
+                        }
+                    } catch (IOException ex) {
+                        Toast.makeText(Register.this, "Error occurred while creating the file", Toast.LENGTH_SHORT).show();
+                    }
+                } else if (options[item].equals("Choose from Gallery")) {
+                    // User chose to pick an image from the gallery
+                    Intent pickPhotoIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    galleryLauncher.launch(pickPhotoIntent);
+                } else if (options[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        // Showing the AlertDialog
+        builder.show();
+    }
+
 
     private void pickImage() {
-        // Intent for picking an image from the gallery
-        Intent pickPhotoIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-        // Intent for taking a new picture with the camera
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-        // Ensure that there's a camera activity to handle the intent
-        boolean canTakePhoto = takePictureIntent.resolveActivity(getPackageManager()) != null;
-
-        // We will use a chooser to let the user pick between taking a photo or selecting from the gallery
-        Intent chooserIntent = Intent.createChooser(pickPhotoIntent, "Select Image or Take Photo");
-
-        // If the device has a camera app, add the take picture intent to the chooser
-        if (canTakePhoto) {
-            chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{takePictureIntent});
+        if (!checkCameraPermission()) {
+            requestCameraPermission();
         }
-
-        // Launch the chooser
-        resultLauncher.launch(chooserIntent);
+        showDialog();
     }
-    private void registerResult() {
-        resultLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == AppCompatActivity.RESULT_OK) {
-                        Intent data = result.getData();
-                        if (data != null && data.getData() != null) {
-                            // Image picked from gallery
-                            uri = data.getData();
-                            imgV.setImageURI(uri);
+    ActivityResultLauncher<Intent> galleryLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+            Uri selectedImageUri = result.getData().getData();
+            imgV.setImageURI(selectedImageUri);
+            // Handle the gallery image URI (e.g., display it or save it)
+        }
+    });
 
-                        } else if (data != null && data.getExtras() != null) {
-                            // Image captured from camera
-
-                            Bundle extras = data.getExtras();
-                            Bitmap imageBitmap = (Bitmap) extras.get("data");
-                            uri = getImageUriFromBitmap(imageBitmap);
-                            imgV.setImageBitmap(imageBitmap);
+    ActivityResultLauncher<Intent> cameraLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK) {
+            imgV.setImageURI(Uri.parse(currentPhotoPath));
+            // Handle the camera image URI (e.g., display it or save it)
+        }
+    });
 
 
-
-                        }
-                    } else {
-                        Toast.makeText(Register.this, "No Image Selected", Toast.LENGTH_SHORT).show();
-                    }
-                }
-        );
-    }
+//    private void registerResult() {
+//        resultLauncher = registerForActivityResult(
+//                new ActivityResultContracts.StartActivityForResult(),
+//                result -> {
+//                    Log.d(currentPhotoPath,"thats the path");
+//                    if (result.getResultCode() == AppCompatActivity.RESULT_OK) {
+//                        Intent data = result.getData();
+//                        if (data != null && data.getData() != null) {
+//                            // Image picked from gallery
+//                            uri = data.getData();
+//                            imgV.setImageURI(uri);
+//
+//                        } else if (data != null && data.getExtras() != null) {
+//                            // Image captured from camera
+//                            imgV.setImageURI(Uri.parse(currentPhotoPath));
+//                        }
+//                    } else {
+//                        Toast.makeText(Register.this, "No Image Selected", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//        );
+//    }
 
 }
