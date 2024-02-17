@@ -40,7 +40,7 @@ public class CommentAdapter extends EditableAdapter<CommentAdapter.CommentViewHo
 
         Comment comment = comments.get(position);
         holder.commentUserImage.setImageURI(comment.getOriginalCommenter().getUserImage());
-        holder.commentUserName.setText(comment.getOriginalCommenter().getUsername());
+        holder.commentUserName.setText(comment.getOriginalCommenter().getDisplayName());
         holder.commentContent.setText(comment.getCommentContent());
         holder.likes.setText(String.valueOf(comment.getLikes()));
         holder.optionsBtn.setImageResource(R.drawable.options_btn);

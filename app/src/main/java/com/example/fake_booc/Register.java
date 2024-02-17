@@ -89,9 +89,6 @@ public class Register extends AppCompatActivity {
 
     Button btnPickImage;
     Button signUpBtn ;
-    String path;
-    Uri uri;
-    String dlog="test";
     ImageView imgV;
     ActivityResultLauncher<Intent>resultLauncher;
     @Override
@@ -129,9 +126,7 @@ public class Register extends AppCompatActivity {
                 "isLengthValid:" + isLengthValid;
         System.out.println(s1);
         Log.d("test",s1);
-        boolean isValidPassword = hasUpperCase && hasSpecialChar && hasNumber && isLengthValid;
-
-        return isValidPassword;
+        return hasUpperCase && hasSpecialChar && hasNumber && isLengthValid;
     }
 
     private boolean isValidCPassword(String cPassword,String password) {
