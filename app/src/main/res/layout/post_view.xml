@@ -58,7 +58,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/post_content_text"
-        tools:srcCompat="@tools:sample/backgrounds/scenic"
+        tools:srcCompat=""
         android:contentDescription="@string/post_image" />
 
     <TextView

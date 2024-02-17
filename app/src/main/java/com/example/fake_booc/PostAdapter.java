@@ -4,14 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -42,7 +40,7 @@ public class PostAdapter extends EditableAdapter<PostAdapter.PostViewHolder> {
         Post post = posts.get(position);
         holder.postTextView.setText(post.getPostText());
         holder.postImage.setImageURI(post.getPostImage());
-        holder.userName.setText(post.getOriginalPoster().getUsername());
+        holder.userName.setText(post.getOriginalPoster().getDisplayName());
         holder.userImage.setImageURI(post.getOriginalPoster().getUserImage());
         holder.uploadDate.setText(post.getUploadDate().format(DateTimeFormatter.ofPattern("MMM d uuuu")));
         holder.likes.setText(String.valueOf(post.getLikes()));

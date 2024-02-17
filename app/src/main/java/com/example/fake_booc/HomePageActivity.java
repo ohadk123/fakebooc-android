@@ -48,10 +48,8 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         setContentView(R.layout.activity_home_page);
 
-        User.addUsers(createDefaultUsers());
         findViews();
 
         fabClickListener();
@@ -113,7 +111,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
         ImageView drawerPFP = headerView.findViewById(R.id.drawer_pfp);
         drawerPFP.setImageURI(User.getSignedIn().getUserImage());
         TextView drawerUsername = headerView.findViewById(R.id.drawer_username);
-        drawerUsername.setText(User.getSignedIn().getUsername());
+        drawerUsername.setText(User.getSignedIn().getDisplayName());
 
         navigationView.setNavigationItemSelectedListener(this);
     }
@@ -149,22 +147,6 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
             Toast.makeText(this, "This feature is not yet implemented", Toast.LENGTH_SHORT).show();
 
         return true;
-    }
-
-    public List<User> createDefaultUsers() {
-        List<User> defaultUsers = new ArrayList<>();
-        defaultUsers.add(new User("Ohad Katz", getUriToDrawable(R.drawable.ohad), "ohad1234", "ohad@email.com"));
-        defaultUsers.add(new User("Adam Celer", getUriToDrawable(R.drawable.adam), "adam1234", "adam@email.com"));
-        defaultUsers.add(new User("Gal Mansuryan", getUriToDrawable(R.drawable.gal), "gal1234", "gal@email.com"));
-        return defaultUsers;
-    }
-
-    public Uri getUriToDrawable(@AnyRes int drawableId) {
-        Context context = this.getApplicationContext();
-        return Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE
-                + "://" + context.getResources().getResourcePackageName(drawableId)
-                + '/' + context.getResources().getResourceTypeName(drawableId)
-                + '/' + context.getResources().getResourceEntryName(drawableId) );
     }
 }
 

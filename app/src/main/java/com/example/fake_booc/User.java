@@ -6,19 +6,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class User {
-    private String username;
+    private String displayName;
     private Uri userImage;
     private String password;
-    private String email;
+    private String username;
 
     private static List<User> registeredUsers = new ArrayList<>();
-    private static User signedIn = getUserByEmail("ohad@email.com");
+    private static User signedIn;
 
-    public User(String name, Uri pfp, String password, String email) {
-        this.username = name;
+    public User(String name, Uri pfp, String password, String username) {
+        this.displayName = name;
         this.userImage = pfp;
         this.password = password;
-        this.email = email;
+        this.username = username;
     }
 
     /**
@@ -29,6 +29,10 @@ public class User {
         return signedIn;
     }
 
+    /**
+     * Add a List of users object to the registered users List
+     * @param users - List of user to add
+     */
     public static void addUsers(List<User> users) {
         registeredUsers.addAll(users);
     }
@@ -37,32 +41,12 @@ public class User {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+    public String getDisplayName() {
+        return displayName;
     }
 
     public Uri getUserImage() {
         return userImage;
-    }
-
-    public void setUserImage(Uri userImage) {
-        this.userImage = userImage;
     }
 
     /**
@@ -89,7 +73,7 @@ public class User {
      * @return true if user is not already signed up, false otherwise
      */
     public boolean signUp() {
-        if (getUserByEmail(this.email) != null)
+        if (getUserByUsername(this.username) != null)
             return false;
         registeredUsers.add(this);
         return true;
@@ -97,47 +81,27 @@ public class User {
 
     /**
      * Finds a registerd user by email
-     * @param email - user email to look for
+     * @param username - user email to look for
      * @return A user object with the same email, null if not in list
      */
-    public static User getUserByEmail(String email) {
+    public static User getUserByUsername(String username) {
         for (User u : registeredUsers) {
-            if (email.equals(u.email)) {
+            if (username.equals(u.username)) {
                 return u;
             }
         }
         return null;
     }
 
-    /**
-     * Returns a list of registered users with the specified username
-     * @param username - username to look for
-     * @return A list of users with attribute "username" == username, empty list if non exist
-     */
-    public static List<User> getUsersByName(String username) {
-        List<User> usersFit = new ArrayList<>();
-        for (User u : registeredUsers) {
-            if (username.equals(u.username)) {
-                usersFit.add(u);
-            }
-        }
-
-        return usersFit;
-    }
-
     public boolean isUserInList(List<User> usersList) {
         for (User u : usersList) {
-            if (u.email.equals(this.email))
+            if (u.username.equals(this.username))
                 return true;
         }
         return false;
     }
 
-    public static List<User> getRegisteredUsers() {
-        return registeredUsers;
-    }
-
     public boolean isSignedIn() {
-        return User.signedIn.email.equals(this.email);
+        return User.signedIn.username.equals(this.username);
     }
 }
