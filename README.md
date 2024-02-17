@@ -9,7 +9,7 @@ To ensure maximum compatibility and to experience the full features of Fakebooc,
 ### Prerequisites
 
 - Make sure you have [Android Studio](https://developer.android.com/studio) installed on your computer.
-- An Android device or emulator running Android version (mention the minimum SDK version here).
+- An Android device or emulator running Android version 
 
 ### Importing the Project
 
