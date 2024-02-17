@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/home"
+            android:title="@string/menu_home"
+            android:iconTint="@color/primary"/>
+        <item
+            android:id="@+id/nav_friends"
+            android:icon="@drawable/friends"
+            android:title="@string/friends" />
+        <item
+            android:id="@+id/nav_memories"
+            android:icon="@drawable/memories"
+            android:title="@string/memories" />
+        <item
+            android:id="@+id/nav_saved"
+            android:icon="@drawable/saved"
+            android:title="@string/saved" />
+        <item
+            android:id="@+id/nav_groups"
+            android:icon="@drawable/groups"
+            android:title="@string/groups" />
+
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/logout"
+            android:title="@string/logout" />
+    </group>
+</menu>

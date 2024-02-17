@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="20sp"
+    android:background="@drawable/post_background">
+
+
+    <ImageView
+        android:id="@+id/post_user_image"
+        android:layout_width="45sp"
+        android:layout_height="45sp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/adam"
+        android:contentDescription="@string/user_pfp" />
+
+    <TextView
+        android:id="@+id/post_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10sp"
+        android:layout_marginTop="30sp"
+        android:text="@string/adam"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/post_user_image"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/post_content_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20sp"
+        android:layout_marginTop="5sp"
+        android:text="@string/default_post"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/post_user_image" />
+
+    <ImageView
+        android:id="@+id/post_content_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20sp"
+        android:layout_marginTop="10dp"
+        android:maxWidth="400dp"
+        android:maxHeight="400dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/post_content_text"
+        tools:srcCompat=""
+        android:contentDescription="@string/post_image" />
+
+    <TextView
+        android:id="@+id/upload_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/deault_date"
+        app:layout_constraintEnd_toStartOf="@+id/add_comment_btn"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/post_content_image" />
+
+    <ImageView
+        android:id="@+id/like_btn"
+        android:layout_width="32sp"
+        android:layout_height="32sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/comments_recycle_view"
+        app:layout_constraintEnd_toStartOf="@+id/likes"
+        app:layout_constraintTop_toBottomOf="@+id/post_content_image"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/like"
+        android:contentDescription="@string/like_button" />
+
+    <TextView
+        android:id="@+id/likes"
+        android:layout_width="32sp"
+        android:layout_height="32sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:text="@string/default_likes"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/post_content_image"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/share_btn"
+        android:layout_width="32sp"
+        android:layout_height="32sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/like_btn"
+        app:layout_constraintTop_toBottomOf="@+id/post_content_image"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/share"
+        android:contentDescription="@string/share" />
+
+    <ImageView
+        android:id="@+id/add_comment_btn"
+        android:layout_width="32sp"
+        android:layout_height="32sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/comments_recycle_view"
+        app:layout_constraintEnd_toStartOf="@+id/share_btn"
+        app:layout_constraintTop_toBottomOf="@+id/post_content_image"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/baseline_add_comment_24"
+        android:contentDescription="@string/add_comment" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/comments_recycle_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20sp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/share_btn" />
+
+    <RelativeLayout
+        android:id="@+id/add_comment_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20sp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/comment_background"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/comments_recycle_view"
+        app:layout_constraintVertical_bias="0.07999998">
+
+        <EditText
+            android:id="@+id/comment_content_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10sp"
+            android:layout_marginVertical="8sp"
+            android:background="@drawable/post_background"
+            android:hint="@string/add_a_comment"
+            android:inputType="text"
+            android:paddingHorizontal="7sp"
+            android:paddingVertical="4sp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:importantForAutofill="no" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/options_post"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/post_content_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.89"
+        app:layout_constraintStart_toEndOf="@+id/post_user"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.652"
+        app:srcCompat="@drawable/options_btn"
+        android:contentDescription="@string/options" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
