@@ -18,7 +18,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         User.addUsers(createDefaultUsers());
-        startActivity(new Intent(MainActivity.this, Login.class));
+        if (User.getSignedIn() == null)
+            startActivity(new Intent(MainActivity.this, Login.class));
+        else
+            startActivity(new Intent(MainActivity.this, HomePageActivity.class));
     }
 
     public List<User> createDefaultUsers() {
