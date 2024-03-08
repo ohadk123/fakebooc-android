@@ -60,41 +60,49 @@ public class UserAPI {
 
 
 
-    public void createUser(String username, String profileName, String password,String cPassword, String  imageB64, @NonNull UserRepository.RegistrationCallback callback){
+    public void createUser(String username, String displayName, String password,String cPassword, String  imageB64, @NonNull UserRepository.RegistrationCallback callback){
         String tst="tst";
 
 
-        Call <RegisterServerResponse> call= webServiceApi.createUser(new UserCreationRequest(username,profileName,password,cPassword,imageB64));
+        Call <RegisterServerResponse> call= webServiceApi.createUser(new UserCreationRequest(username,displayName,password,cPassword,imageB64));
 
         call.enqueue(new Callback<RegisterServerResponse>() {
+            private boolean registrationCompleted = false; // Add this flag
             @Override
+
             public void onResponse(Call<RegisterServerResponse> call, Response<RegisterServerResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    RegisterServerResponse serverResponse = response.body();
-                    if (serverResponse.isSuccess()) {
-                        Log.d(tst, "Registration successful");
-                        // Invoke callback for successful registration
-                        callback.onRegistrationComplete(true,"");
-                    } else {
-                        // Handle case where isSuccess is false but request technically succeeded
-                        Log.d(tst, "Registration failed: " + serverResponse.getErrors());
-                        callback.onRegistrationComplete(false,"");
-                    }
-                } else {
-                    // Server responded with error status code (e.g., 409 Conflict)
-                    Log.d(tst, "Server responded with failure: " + response.code());
-                    if (response.errorBody() != null) {
-                        try {
-                            // Attempt to parse error body if present
-                            String errorString = response.errorBody().string();
-                            Log.d(tst, "Error body: " + errorString);
-                            // Handle error condition, possibly by displaying error to the user
-                            callback.onRegistrationComplete(false,errorString);
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                if (!registrationCompleted) { // Check if registration is already completed
+                    if (response.isSuccessful() && response.body() != null) {
+                        RegisterServerResponse serverResponse = response.body();
+                        if (serverResponse.isSuccess()) {
+                            Log.d(tst, "Registration successful");
+                            // Invoke callback for successful registration
+                            registrationCompleted = true; // Update the flag
+                            callback.onRegistrationComplete(true,"");
+                        } else {
+                            // Handle case where isSuccess is false but request technically succeeded
+                            Log.d(tst, "Registration failed: " + serverResponse.getErrors());
+                            registrationCompleted = true; // Update the flag
+                            callback.onRegistrationComplete(false,"");
                         }
                     } else {
-                        callback.onRegistrationComplete(false,"");
+                        // Server responded with error status code (e.g., 409 Conflict)
+                        Log.d(tst, "Server responded with failure: " + response.code());
+                        if (response.errorBody() != null) {
+                            try {
+                                // Attempt to parse error body if present
+                                String errorString = response.errorBody().string();
+                                Log.d(tst, "Error body: " + errorString);
+                                // Handle error condition, possibly by displaying error to the user
+                                registrationCompleted = true; // Update the flag
+                                callback.onRegistrationComplete(false,errorString);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            registrationCompleted = true; // Update the flag
+                            callback.onRegistrationComplete(false,"");
+                        }
                     }
                 }
             }

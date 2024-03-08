@@ -17,10 +17,10 @@ public class UserRepository {
     }
 
 
-    public void registerUser(String username, String profileName, String password,String cPassword, String  imageB64, @NonNull RegistrationCallback callback) {
+    public void registerUser(String username, String displayName, String password,String cPassword, String  imageB64, @NonNull RegistrationCallback callback) {
 
         UserAPI userAPI=new UserAPI();
-        userAPI.createUser(username,profileName,password,cPassword,imageB64,callback);
+        userAPI.createUser(username,displayName,password,cPassword,imageB64,callback);
         return;
     }
 

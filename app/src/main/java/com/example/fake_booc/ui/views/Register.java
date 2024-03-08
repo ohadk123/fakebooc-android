@@ -12,6 +12,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,6 +31,10 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.fake_booc.R;
 import com.example.fake_booc.ui.viewsmodels.RegisterViewModel;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -51,6 +57,7 @@ public class Register extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        String tst="tst";
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
@@ -65,13 +72,26 @@ public class Register extends AppCompatActivity {
         signUpBtn.setOnClickListener(view -> handleSignUp());
         btnPickImage.setOnClickListener(view -> pickImage());
 
+
+
+        registerViewModel.getErr().observe(this, status -> {
+            Log.d(tst, String.valueOf(status));
+            if (!status.isEmpty()) {
+                showErrorDialog(String.valueOf(status)); // Modify showErrorDialog to handle server response
+            }else{
+                // Navigate to login page
+                Intent intent = new Intent(this, Login.class);
+                startActivity(intent);
+                finish(); // Finish the current activity to prevent going back to it from the login page
+            }
+        });
     }
 
     private void handleSignUp() {
         // Retrieve user inputs
         // Check for required fields' emptiness only, as an example
 
-        String a="all";
+        String tst="tsthandle";
         // Retrieve data from EditText fields
         EditText usernameEditText = findViewById(R.id.registerUsernameEditText);
         EditText profileNameEditText = findViewById(R.id.mailEditText);
@@ -82,26 +102,14 @@ public class Register extends AppCompatActivity {
         String profileName = profileNameEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString();
         String cPassword = cPasswordEditText.getText().toString();
-        Uri imageUri = getImageUri(imgV);
+
+
 
         // Call registerUser on your ViewModel
-        registerViewModel.registerUser(username, profileName, password,cPassword, imageUri);
+        registerViewModel.registerUser(username, profileName, password,cPassword, imageViewToBase64(imgV));
 
-        // Observe ViewModel LiveData for server response
-        registerViewModel.getRegistrationStatus().observe(this, status -> {
-            if (status==true) {
-                //todo Registration successful, navigate to next screen
-            } else {
-                //todo Show error dialog
-                showErrorDialog(String.valueOf(status)); // Modify showErrorDialog to handle server response
-            }
-        });
 
-        registerViewModel.getErr().observe(this, status -> {
-            if (!status.isEmpty()) {
-                showErrorDialog(String.valueOf(status)); // Modify showErrorDialog to handle server response
-            }
-        });
+
 
 
 
@@ -111,7 +119,23 @@ public class Register extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View dialogView = getLayoutInflater().inflate(R.layout.custom_alert_dialog, null);
         TextView errorMessageTextView = dialogView.findViewById(R.id.errorMessageTextView);
-        errorMessageTextView.setText(errorMessage);
+
+        // Parse JSON error message
+        try {
+            JSONObject errorJson = new JSONObject(errorMessage);
+            JSONArray errorsArray = errorJson.getJSONArray("errors");
+            StringBuilder formattedErrorMessage = new StringBuilder();
+            for (int i = 0; i < errorsArray.length(); i++) {
+                String error = errorsArray.getString(i);
+                if (!error.isEmpty()) {
+                    formattedErrorMessage.append("• ").append(error).append("\n");
+                }
+            }
+            errorMessageTextView.setText(formattedErrorMessage.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+            errorMessageTextView.setText("Error parsing error message");
+        }
 
         builder.setView(dialogView)
                 .setTitle("Error")
@@ -119,15 +143,27 @@ public class Register extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-    private Uri getImageUri(ImageView imageView) {
+
+    public static String imageViewToBase64(ImageView imageView) {
+        // Get the drawable from the ImageView
         BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+        if (drawable == null) {
+            // Handle case where ImageView has no image
+            return null;
+        }
+
+        // Get the Bitmap from the drawable
         Bitmap bitmap = drawable.getBitmap();
 
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "Title", null);
-        return Uri.parse(path);
+        // Convert the Bitmap to a byte array
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        byte[] imageBytes = byteArrayOutputStream.toByteArray();
+
+        // Encode the byte array to Base64 string
+        return Base64.encodeToString(imageBytes, Base64.DEFAULT);
     }
+
     private boolean checkCameraPermission() {
         return ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
@@ -171,7 +207,7 @@ public class Register extends AppCompatActivity {
                     try {
                         photoFile = createImageFile();
                         if (photoFile != null) {
-                            Uri photoURI = FileProvider.getUriForFile(Register.this, "com.example.apt8.fileProvider", photoFile);
+                            Uri photoURI = FileProvider.getUriForFile(Register.this, "com.example.fake_booc.fileProvider", photoFile);
                             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                             cameraLauncher.launch(takePictureIntent);
