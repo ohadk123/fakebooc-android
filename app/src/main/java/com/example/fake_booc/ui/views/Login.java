@@ -1,6 +1,8 @@
 package com.example.fake_booc.ui.views;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -9,6 +11,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.fake_booc.MyApplication;
 import com.example.fake_booc.R;
 import com.example.fake_booc.ui.viewsmodels.LoginViewModel;
 
@@ -48,6 +51,11 @@ public class Login extends AppCompatActivity {
             if (loginToken != null && !loginToken.isEmpty()) {
                 // Login was successful, print the token
                 System.out.println("Login successful, token: " + loginToken);
+
+                SharedPreferences sharedPreferences = MyApplication.context.getSharedPreferences("signed_in", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("token", loginToken);
+                editor.apply();
 
                 // Optionally, navigate to the HomePageActivity or handle the successful login as needed
                 // startActivity(new Intent(Login.this, HomePageActivity.class));

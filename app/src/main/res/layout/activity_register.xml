@@ -67,7 +67,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Display Name"
+                        android:text="username"
                         android:textSize="12sp"
                         android:textColor="#80FFFFFF"/>
 
@@ -104,11 +104,11 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Username"
+                        android:text="displayName"
                         android:textSize="12sp"
                         android:textColor="#80FFFFFF"/>
                     <EditText
-                        android:id="@+id/mailEditText"
+                        android:id="@+id/displayNameEdit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"

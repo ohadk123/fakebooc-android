@@ -94,19 +94,19 @@ public class Register extends AppCompatActivity {
         String tst="tsthandle";
         // Retrieve data from EditText fields
         EditText usernameEditText = findViewById(R.id.registerUsernameEditText);
-        EditText profileNameEditText = findViewById(R.id.mailEditText);
+        EditText displayNameEditText = findViewById(R.id.displayNameEdit);
         EditText passwordEditText = findViewById(R.id.passwordEditText);
         EditText cPasswordEditText = findViewById(R.id.CPasswordEditText);
 
         String username = usernameEditText.getText().toString().trim();
-        String profileName = profileNameEditText.getText().toString().trim();
+        String displayName = displayNameEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString();
         String cPassword = cPasswordEditText.getText().toString();
 
 
 
         // Call registerUser on your ViewModel
-        registerViewModel.registerUser(username, profileName, password,cPassword, imageViewToBase64(imgV));
+        registerViewModel.registerUser(username, displayName, password,cPassword, imageViewToBase64(imgV));
 
 
 
@@ -159,9 +159,11 @@ public class Register extends AppCompatActivity {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
         byte[] imageBytes = byteArrayOutputStream.toByteArray();
-
+        String entryB64=Base64.encodeToString(imageBytes, Base64.DEFAULT);
         // Encode the byte array to Base64 string
-        return Base64.encodeToString(imageBytes, Base64.DEFAULT);
+        String cleanedBase64 = entryB64.replaceAll("\n", "").replaceAll("\r", "").trim();
+
+        return cleanedBase64;
     }
 
     private boolean checkCameraPermission() {
