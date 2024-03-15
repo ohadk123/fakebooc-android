@@ -69,7 +69,7 @@ public class EditPostActivity extends AppCompatActivity {
 
         editPostBtn = findViewById(R.id.edit_post_btn);
         editPostBtn.setOnClickListener(v -> {
-            String imgBase64 = RegisterActivity.imageViewToBase64(imagePreview);
+            String imgBase64 = Utils.imageViewToBase64(imagePreview);
             String postText = postContentInput.getText().toString();
 
             postViewModel.reqUpdatePost(pid, postText, imgBase64);

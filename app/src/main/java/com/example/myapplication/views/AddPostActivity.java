@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.myapplication.R;
+import com.example.myapplication.Utils;
 import com.example.myapplication.viewModels.PostViewModel;
 
 public class AddPostActivity extends AppCompatActivity {
@@ -55,7 +56,7 @@ public class AddPostActivity extends AppCompatActivity {
 
     private void setAddPostBtn() {
         addPostBtn.setOnClickListener(v -> {
-            String imgBase64 = RegisterActivity.imageViewToBase64(imagePreview);
+            String imgBase64 = Utils.imageViewToBase64(imagePreview);
             String postText = postContentInput.getText().toString();
 
             postViewModel.reqCreatePost(postText, imgBase64);
