@@ -39,11 +39,17 @@ public class PostViewModel extends ViewModel {
         postRepository.reqUserPosts(username);
     }
 
-    public void reqCreatePost(JsonObject createPostBody) {
+    public void reqCreatePost(String content, String contentImage) {
+        JsonObject createPostBody = new JsonObject();
+        createPostBody.addProperty("content", content);
+        createPostBody.addProperty("contentImage", contentImage);
         postRepository.reqCreatePost(createPostBody);
     }
 
-    public void reqUpdatePost(String pid, JsonObject updatePostBody) {
+    public void reqUpdatePost(String pid, String content, String contentImage) {
+        JsonObject updatePostBody = new JsonObject();
+        updatePostBody.addProperty("content", content);
+        updatePostBody.addProperty("contentImage", contentImage);
         postRepository.reqUpdatePost(pid, updatePostBody);
     }
 

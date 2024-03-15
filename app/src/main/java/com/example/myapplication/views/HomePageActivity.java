@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.myapplication.R;
+import com.example.myapplication.Utils;
 import com.example.myapplication.models.database.entities.Post;
 import com.example.myapplication.models.database.entities.PostWithUser;
 import com.example.myapplication.viewModels.PostViewModel;
@@ -36,6 +38,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class HomePageActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -63,11 +66,27 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
         postViewModel = new ViewModelProvider(this).get(PostViewModel.class);
 
         findViews();
-        // TODO: Add Floating Action Button Click Listener
+        fabClickListener();
         setSupportActionBar(toolbar);
         setUpDrawer();
         setUpRecycleView();
         setModeSwitch();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshLayout.post(() -> {
+            refreshLayout.setRefreshing(true);
+            postViewModel.reqPostsForFeed();
+        });
+    }
+
+    private void fabClickListener() {
+        fab.setOnClickListener(v -> {
+            Intent intent = new Intent(HomePageActivity.this, AddPostActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void setUpRecycleView() {
@@ -142,10 +161,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
         userViewModel.reqConnectedUserInfo();
         userViewModel.getConnectedUserData().observe(this, user -> {
             drawerUsername.setText(user.getDisplayName());
-
-            byte[] userImageBytes = Base64.decode(user.getProfileImage(), Base64.DEFAULT);
-            Bitmap userImageBitmap = BitmapFactory.decodeByteArray(userImageBytes, 0, userImageBytes.length);
-            drawerPFP.setImageBitmap(userImageBitmap);
+            drawerPFP.setImageBitmap(Utils.base64ToBitmap(user.getProfileImage()));
         });
     }
 

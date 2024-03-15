@@ -191,7 +191,7 @@ public class RegisterActivity extends AppCompatActivity {
         userViewModel.reqCreateUser(username, displayName, password, cPassword, imageB64);
     }
 
-    private String imageViewToBase64(ImageView imageView) {
+    public static String imageViewToBase64(ImageView imageView) {
         BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
         if (drawable == null) {
             // Handle case where ImageView has no image

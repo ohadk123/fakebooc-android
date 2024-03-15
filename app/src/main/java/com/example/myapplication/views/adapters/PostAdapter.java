@@ -5,31 +5,29 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.Utils;
 import com.example.myapplication.models.api.TokenClient;
 import com.example.myapplication.models.database.entities.Post;
-import com.example.myapplication.models.database.entities.PostWithUser;
-import com.example.myapplication.models.database.entities.User;
-import com.example.myapplication.viewModels.CommentViewModel;
 import com.example.myapplication.viewModels.PostViewModel;
 import com.example.myapplication.viewModels.UserViewModel;
+import com.example.myapplication.views.EditPostActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,18 +76,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostFeedViewHo
         holder.shareBtn.setImageResource(R.drawable.share);
         holder.addCommentLayout.setVisibility(View.GONE);
         holder.optionsBtn.setImageResource(R.drawable.options_btn);
-
-        byte[] postImageBytes = Base64.decode(post.getContentImage(), Base64.DEFAULT);
-        Bitmap postImageBitmap = BitmapFactory.decodeByteArray(postImageBytes, 0, postImageBytes.length);
-        holder.postImage.setImageBitmap(postImageBitmap);
+        holder.postImage.setImageBitmap(Utils.base64ToBitmap(post.getContentImage()));
 
         userViewModel.getPostUser(post.getUploader()).observe(lifecycleOwner, user -> {
             if (user != null && post.getUploader().equals(user.getUsername())) {
                 holder.userName.setText(user.getDisplayName());
-
-//                byte[] userImageBytes = Base64.decode(user.getProfileImage(), Base64.DEFAULT);
-//                Bitmap userImageBitmap = BitmapFactory.decodeByteArray(userImageBytes, 0, userImageBytes.length);
-//                holder.userImage.setImageBitmap(userImageBitmap);
+                holder.userImage.setImageBitmap(Utils.base64ToBitmap(user.getProfileImage()));
             }
         });
 
@@ -101,13 +93,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostFeedViewHo
                 List<String> likes = post.getLikes();
                 likes.remove(TokenClient.getTokenUser());
                 post.setLikes(likes);
+                postViewModel.reqUnlikePost(post.get_id());
             } else {
                 holder.likeBtn.setImageResource(R.drawable.like_fill);
                 List<String> likes = post.getLikes();
                 likes.add(TokenClient.getTokenUser());
                 post.setLikes(likes);
+                postViewModel.reqLikePost(post.get_id());
             }
-            postViewModel.reqLikePost(post.get_id());
             notifyItemChanged(position);
         });
 
@@ -121,14 +114,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostFeedViewHo
                         postViewModel.reqDeletePost(post.get_id());
                         posts.remove(post);
                         postViewModel.reqPostsForFeed();
+                        notifyDataSetChanged();
                         return true;
                     }
                     if (item.getItemId() == R.id.edit_item) {
-//                        Intent editPostIntent = new Intent(context, EditPostActivity.class);
-//                        editPostIntent.putExtra("pid", post.get_id());
-//                        editPostIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                        context.startActivity(editPostIntent);
-//                        return true;
+                        Intent editPostIntent = new Intent(context, EditPostActivity.class);
+                        editPostIntent.putExtra("pid", post.get_id());
+                        editPostIntent.putExtra("content", post.getContent());
+                        editPostIntent.putExtra("image", post.getContentImage());
+                        editPostIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(editPostIntent);
+                        return true;
                     }
                     return false;
                 });
