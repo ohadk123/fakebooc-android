@@ -23,7 +23,6 @@ public class AddPostActivity extends AppCompatActivity {
     private ImageButton uploadImageBtn;
     private EditText postContentInput;
     private ImageView imagePreview;
-    private Uri image;
     private ImageButton removeImageBtn;
     private PostViewModel postViewModel;
 
@@ -35,22 +34,19 @@ public class AddPostActivity extends AppCompatActivity {
         postViewModel = new ViewModelProvider(this).get(PostViewModel.class);
         postContentInput = findViewById(R.id.post_content_input);
 
-        imagePreview = findViewById(R.id.image_preview);
-        addPostBtn = findViewById(R.id.add_post_btn);
-        uploadImageBtn = findViewById(R.id.upload_image_btn);
-        removeImageBtn = findViewById(R.id.remove_image_btn);
 
+        addPostBtn = findViewById(R.id.add_post_btn);
         setAddPostBtn();
 
+        imagePreview = findViewById(R.id.image_preview);
         ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(), selectedImage -> {
             imagePreview.setImageURI(selectedImage);
         });
 
-        uploadImageBtn.setOnClickListener(v -> {
-            Intent imagePicker = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-            mGetContent.launch("image/*");
-        });
+        uploadImageBtn = findViewById(R.id.upload_image_btn);
+        uploadImageBtn.setOnClickListener(v -> mGetContent.launch("image/*"));
 
+        removeImageBtn = findViewById(R.id.remove_image_btn);
         removeImageBtn.setOnClickListener(v -> imagePreview.setImageResource(R.drawable.empty_image));
     }
 
