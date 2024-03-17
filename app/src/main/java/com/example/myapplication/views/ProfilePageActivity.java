@@ -110,10 +110,6 @@ private SwipeRefreshLayout srl;
             }
         });
 
-
-
-
-
     }
 
     private void reecreate(){
@@ -215,11 +211,10 @@ private SwipeRefreshLayout srl;
         Log.d("testcount2222222222", "2 "+profile_username);
         friendViewModel.reqUserFriendReqList(profile_username);
         friendViewModel.getUserFriendReqListData().observe(this, pendingReqs2 -> {
-            if( closedShit==1) return;
-            if(thirdReqFlag>1) return;
-            thirdReqFlag++;
+
             Log.d("test233", pendingReqs2.toString() + profile_username);
             if (pendingReqs2.contains(ConnectedUsername)) {
+
                 friendStatusButton.setText("Pending...");
                 friendStatusButton.setOnClickListener(null); // Do nothing on click
             } else {

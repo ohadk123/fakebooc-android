@@ -35,8 +35,10 @@ public class LoginActivity extends AppCompatActivity {
 
         final TextView signUpBtn = findViewById(R.id.signUpBtn);
         signUpBtn.setOnClickListener(view -> {
+            Log.d("weid","weid");
             Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(registerIntent);
+            finish();
         });
 
         final TextView logInBtn = findViewById(R.id.logInBtn);
