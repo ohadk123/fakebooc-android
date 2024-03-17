@@ -1,7 +1,6 @@
 package com.example.myapplication.views;
 
-import android.content.Intent;
-import android.net.Uri;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -15,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.myapplication.ImageHolder;
 import com.example.myapplication.R;
 import com.example.myapplication.Utils;
 import com.example.myapplication.viewModels.PostViewModel;
@@ -42,14 +42,14 @@ public class EditPostActivity extends AppCompatActivity {
 
         String pid = extras.getString("pid");
         String content = extras.getString("content");
-        String image = extras.getString("image");
+        Drawable image = ImageHolder.userImageDrawable;
 
-        postContentInput = findViewById(R.id.post_content_input);
+        postContentInput = findViewById(R.id.post_content);
         postContentInput.setText(content);
 
-        imagePreview = findViewById(R.id.image_preview);
+        imagePreview = findViewById(R.id.Update_image_preview);
         if (image != null)
-            imagePreview.setImageBitmap(Utils.base64ToBitmap(image));
+            imagePreview.setImageDrawable(image);
         else
             imagePreview.setImageResource(R.drawable.empty_image);
 

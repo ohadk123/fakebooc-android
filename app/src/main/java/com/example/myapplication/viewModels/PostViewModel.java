@@ -16,11 +16,15 @@ public class PostViewModel extends ViewModel {
     private LiveData<PostList> feedPostsData;
     private LiveData<Post> postData;
     private PostRepository postRepository;
+    private LiveData<List<Post>> userPostsData;
+
 
     public PostViewModel() {
         postRepository = new PostRepository();
         this.feedPostsData = postRepository.getPostListData();
         this.postData = postRepository.getPostData();
+        this.userPostsData = postRepository.getUserPostsData();
+
     }
 
     public LiveData<PostList> getFeedPostsData() {
@@ -70,5 +74,8 @@ public class PostViewModel extends ViewModel {
         jsonPostBody.addProperty("content", content);
         jsonPostBody.addProperty("contentImage", contentImage);
         return jsonPostBody;
+    }
+    public LiveData<List<Post>> getUserPostsData() {
+        return userPostsData;
     }
 }

@@ -1,7 +1,6 @@
 package com.example.myapplication;
 
-import android.graphics.drawable.Drawable;
-
-public class ImageHolder {
-    public static Drawable userImageDrawable;
+public class InBetweenHolder {
+    public static String username;
+    public static String displayName;
 }

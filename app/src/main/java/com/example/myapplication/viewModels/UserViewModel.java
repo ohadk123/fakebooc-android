@@ -17,6 +17,7 @@ public class UserViewModel extends ViewModel {
     private LiveData<String> tokenData;
     private LiveData<User> userInfoData;
     private LiveData<User> connectedUserData;
+    public static User connectedUser;
     private UserRepository userRepository;
 
     public UserViewModel() {

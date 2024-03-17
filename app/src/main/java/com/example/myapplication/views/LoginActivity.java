@@ -47,7 +47,8 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         userViewModel.getTokenData().observe(this, loginToken -> {
-            if (loginToken != null && !loginToken.isEmpty()) {
+            if(loginToken==null) return;
+            if (!loginToken.isEmpty()) {
                 Log.d("login", loginToken);
                 SharedPreferences sharedPreferences = MainActivity.context.getSharedPreferences("signed_in", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();

@@ -1,7 +1,5 @@
 package com.example.myapplication.views;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,13 +30,13 @@ public class AddPostActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_post);
 
         postViewModel = new ViewModelProvider(this).get(PostViewModel.class);
-        postContentInput = findViewById(R.id.post_content_input);
+        postContentInput = findViewById(R.id.post_content);
 
 
-        addPostBtn = findViewById(R.id.add_post_btn);
+        addPostBtn = findViewById(R.id.upload_post);
         setAddPostBtn();
 
-        imagePreview = findViewById(R.id.image_preview);
+        imagePreview = findViewById(R.id.Update_image_preview);
         ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(), selectedImage -> {
             imagePreview.setImageURI(selectedImage);
         });

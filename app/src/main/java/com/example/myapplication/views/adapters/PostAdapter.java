@@ -1,9 +1,11 @@
 package com.example.myapplication.views.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +23,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.ImageHolder;
+import com.example.myapplication.InBetweenHolder;
 import com.example.myapplication.R;
 import com.example.myapplication.Utils;
 import com.example.myapplication.models.api.TokenClient;
@@ -28,6 +32,7 @@ import com.example.myapplication.models.database.entities.Post;
 import com.example.myapplication.viewModels.PostViewModel;
 import com.example.myapplication.viewModels.UserViewModel;
 import com.example.myapplication.views.EditPostActivity;
+import com.example.myapplication.views.ProfilePageActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,6 +90,28 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostFeedViewHo
             }
         });
 
+        holder.userName.setOnClickListener(v -> {
+            Intent intent = new Intent(context, ProfilePageActivity.class);
+
+            // Assuming holder.username is a TextView
+
+            Drawable imageDrawable = holder.userImage.getDrawable();
+            ImageHolder.userImageDrawable = imageDrawable;
+            // Get uploader's username from the post object
+            String uploaderUsername = post.getUploader();
+            String displayName = holder.userName.getText().toString();
+            InBetweenHolder.username=uploaderUsername;
+            InBetweenHolder.displayName=displayName;
+
+
+            if (!(context instanceof Activity)) {
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            }
+            context.startActivity(intent);
+        });
+
+
+
         holder.likeBtn.setImageResource(post.getLikes().contains(TokenClient.getTokenUser()) ?
                 R.drawable.like_fill : R.drawable.like);
         holder.likeBtn.setOnClickListener(v -> {
@@ -121,7 +148,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostFeedViewHo
                         Intent editPostIntent = new Intent(context, EditPostActivity.class);
                         editPostIntent.putExtra("pid", post.get_id());
                         editPostIntent.putExtra("content", post.getContent());
-                        editPostIntent.putExtra("image", post.getContentImage());
+                        ImageHolder.userImageDrawable=holder.postImage.getDrawable();
                         editPostIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(editPostIntent);
                         return true;

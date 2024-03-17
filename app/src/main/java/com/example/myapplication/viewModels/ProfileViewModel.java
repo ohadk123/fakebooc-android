@@ -1,2 +1,5 @@
-package com.example.myapplication.viewModels;public class ProfileViewModel {
+package com.example.myapplication.viewModels;
+
+public class ProfileViewModel {
+
 }

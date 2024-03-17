@@ -63,10 +63,10 @@ public interface WebServiceApi {
     @POST("users/{username}/friends")
     Call<FriendReq> sendFriendReq(@Path("username") String receiver);
 
-    @PATCH("users/{username}/friends/{fUsername")
+    @PATCH("users/{username}/friends/{fUsername}")
     Call<Friends> acceptFriendReq(@Path("username") String receiver, @Path("fUsername") String sender);
 
-    @DELETE("users/{username}/friends/{fUsername")
+    @DELETE("users/{username}/friends/{fUsername}")
     Call<Friends> removeFriend(@Path("username") String username, @Path("fUsername") String other);
 
     @POST("posts/{pid}/likes")

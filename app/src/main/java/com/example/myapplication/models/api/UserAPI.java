@@ -56,7 +56,7 @@ public class UserAPI {
                 if (response.isSuccessful() && response.body() != null)
                     token.postValue(response.body().get("token").getAsString());
                 else if (response.errorBody() != null)
-                    token.postValue(null);
+                    token.postValue("");
             }
 
             @Override

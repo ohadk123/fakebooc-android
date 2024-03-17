@@ -160,6 +160,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
 
         userViewModel.reqConnectedUserInfo();
         userViewModel.getConnectedUserData().observe(this, user -> {
+            UserViewModel.connectedUser=user;
             drawerUsername.setText(user.getDisplayName());
             drawerPFP.setImageBitmap(Utils.base64ToBitmap(user.getProfileImage()));
         });
