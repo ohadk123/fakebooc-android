@@ -113,8 +113,9 @@ private SwipeRefreshLayout srl;
     }
 
     private void reecreate(){
-
+        srl.setRefreshing(true);
         srl.postDelayed(new Runnable() {
+
             @Override
             public void run() {
                 // Code to restart the activity with the same intent and extras
@@ -178,9 +179,11 @@ private SwipeRefreshLayout srl;
                 friendStatusButton.setOnClickListener(v -> deleteFriend());
                 closedShit=1;
             } else {
-                Log.d("testcounter", "1 "+ConnectedUsername);
-                emptyView.setVisibility(View.VISIBLE);
-                checkForFriendRequests();
+                if(closedShit==0) {
+                    Log.d("testcounter", "1 " + ConnectedUsername);
+                    emptyView.setVisibility(View.VISIBLE);
+                    checkForFriendRequests();
+                }
             }
             firstReqFlag++;
         });
@@ -215,12 +218,16 @@ private SwipeRefreshLayout srl;
             Log.d("test233", pendingReqs2.toString() + profile_username);
             if (pendingReqs2.contains(ConnectedUsername)) {
 
+                closedShit=1;
+                TextView emptyView = findViewById(R.id.recycler_textView);
+                emptyView.setVisibility(View.VISIBLE);
                 friendStatusButton.setText("Pending...");
                 friendStatusButton.setOnClickListener(null); // Do nothing on click
             } else {
-                friendStatusButton.setText("Add Friend");
+                if(closedShit!=0) {
+                    friendStatusButton.setText("Add Friend");
                 friendStatusButton.setOnClickListener(v -> addFriend());
-            }
+            }}
         });
 
     }
