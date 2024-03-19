@@ -2,10 +2,7 @@ package com.example.myapplication.views;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,17 +26,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.myapplication.R;
 import com.example.myapplication.Utils;
-import com.example.myapplication.models.database.entities.Post;
-import com.example.myapplication.models.database.entities.PostWithUser;
 import com.example.myapplication.viewModels.PostViewModel;
 import com.example.myapplication.viewModels.UserViewModel;
 import com.example.myapplication.views.adapters.PostAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class HomePageActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -94,9 +85,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(feedPostAdapter);
 
-        refreshLayout.setOnRefreshListener(() -> {
-            postViewModel.reqPostsForFeed();
-        });
+        refreshLayout.setOnRefreshListener(() -> postViewModel.reqPostsForFeed());
 
         postViewModel.getFeedPostsData().observe(this, posts -> {
             feedPostAdapter.setPosts(posts.getPosts());
@@ -160,7 +149,8 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
 
         userViewModel.reqConnectedUserInfo();
         userViewModel.getConnectedUserData().observe(this, user -> {
-            UserViewModel.connectedUser=user;
+            UserViewModel.connectedUser = user;
+            Log.d("drawer", user.getDisplayName());
             drawerUsername.setText(user.getDisplayName());
             drawerPFP.setImageBitmap(Utils.base64ToBitmap(user.getProfileImage()));
         });
@@ -171,6 +161,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
         if (menuItem.getItemId() == R.id.nav_home) {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else if (menuItem.getItemId() == R.id.nav_logout) {
+            UserViewModel.logout();
             Intent intent = new Intent(HomePageActivity.this, LoginActivity.class);
             startActivity(intent);
         } else

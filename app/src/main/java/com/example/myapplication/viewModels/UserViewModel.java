@@ -29,12 +29,17 @@ public class UserViewModel extends ViewModel {
         this.createUserData = userRepository.getCreateUserData();
     }
 
+    public static void logout() {
+        connectedUser = null;
+        MainActivity.context.deleteSharedPreferences("signed_in");
+    }
+
     public void reqCreateUser(String username, String displayName, String password, String cPassword, String imageB64) {
         JsonObject registerBodyJson = new JsonObject();
         registerBodyJson.addProperty("username", username);
         registerBodyJson.addProperty("displayName", displayName);
         registerBodyJson.addProperty("password", password);
-        registerBodyJson.addProperty("cPassword", imageB64);
+        registerBodyJson.addProperty("cPassword", cPassword);
         registerBodyJson.addProperty("imageB64", imageB64);
         userRepository.reqCreateUser(registerBodyJson);
     }

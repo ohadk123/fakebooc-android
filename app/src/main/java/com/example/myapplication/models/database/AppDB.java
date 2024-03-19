@@ -8,6 +8,7 @@ import com.example.myapplication.MainActivity;
 import com.example.myapplication.models.database.daos.PostDao;
 import com.example.myapplication.models.database.entities.Post;
 
+@Database(entities = {Post.class}, version = 1)
 public abstract class AppDB extends RoomDatabase {
     public abstract PostDao postDao();
 
