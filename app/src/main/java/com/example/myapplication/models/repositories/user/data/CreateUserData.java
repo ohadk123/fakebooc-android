@@ -9,6 +9,6 @@ public class CreateUserData extends MutableLiveData<List<String>> {
 
     public CreateUserData() {
         super();
-        setValue(new ArrayList<>());
+        setValue(null);
     }
 }

@@ -26,7 +26,6 @@ public class UserViewModel extends ViewModel {
         this.createUserData = userRepository.getCreateUserData();
         this.userInfoData = userRepository.getUserInfoData();
         this.connectedUserData = userRepository.getConnectedUserData();
-        this.createUserData = userRepository.getCreateUserData();
     }
 
     public static void logout() {

@@ -38,7 +38,6 @@ public class LoginActivity extends AppCompatActivity {
             Log.d("weid","weid");
             Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(registerIntent);
-            finish();
         });
 
         final TextView logInBtn = findViewById(R.id.logInBtn);
@@ -49,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         userViewModel.getTokenData().observe(this, loginToken -> {
-            if(loginToken==null) return;
+            if(loginToken == null) return;
             if (!loginToken.isEmpty()) {
                 Log.d("login", loginToken);
                 SharedPreferences sharedPreferences = MainActivity.context.getSharedPreferences("signed_in", Context.MODE_PRIVATE);
