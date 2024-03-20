@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ProfilePageRefresh"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".views.ProfilePageActivity">
+
+
+
+
+  <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/profilePagePostRecyclerView"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:layout_marginTop="24dp"
+      android:background="@drawable/constraint_layout_border"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+      android:id="@+id/linearLayout"
+
+      android:layout_width="400dp"
+      android:layout_height="266dp"
+      android:layout_marginTop="40dp"
+      android:background="@color/white"
+      app:layout_constraintBottom_toTopOf="@+id/profilePagePostRecyclerView"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.48"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent">
+
+    <ImageView
+        android:id="@+id/profilePageImage"
+        android:layout_width="129dp"
+        android:layout_height="130dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="43dp"
+        android:background="@drawable/constraint_layout_border"
+        android:baselineAligned="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/profilePageFriendStatusBtn"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.539"
+        app:srcCompat="@drawable/adam" />
+
+    <TextView
+        android:id="@+id/profilePageName"
+        android:layout_width="185dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="36dp"
+        android:text="TextView"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.27"
+        app:layout_constraintStart_toEndOf="@+id/profilePageImage"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/profilePageFriendStatusBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="52dp"
+        android:text="Friends?/delete"
+        app:layout_constraintBottom_toTopOf="@+id/profilePageUpdateAccountBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profilePageName"
+        app:layout_constraintVertical_bias="0.425" />
+
+    <Button
+        android:id="@+id/profilePageUpdateAccountBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
+        android:text="Update Account"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.452"
+        app:layout_constraintStart_toEndOf="@+id/profilePageImage" />
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+  <TextView
+      android:id="@+id/recycler_textView"
+      android:layout_width="381dp"
+      android:layout_height="64dp"
+      android:layout_marginTop="120dp"
+      android:text="Nothing to see! you are no friends!"
+      android:textSize="20sp"
+      android:textStyle="bold"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.7"
+      app:layout_constraintStart_toStartOf="@+id/profilePagePostRecyclerView"
+      app:layout_constraintTop_toTopOf="@+id/profilePagePostRecyclerView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

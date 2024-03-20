@@ -62,4 +62,5 @@
     <string name="add_comment">Add Comment</string>
     <string name="add_a_comment">Add a comment</string>
     <string name="ohad">Ohad Katz</string>
+    <string name="BaseUrl">http://10.0.2.2:8080/api/</string>
 </resources>
