@@ -33,11 +33,8 @@ Ensure you have **Android Studio** installed on your machine. If not, download i
 - **Social Integration**: Share, like, comment, and interact just like you would on Facebook.
 - **Unique Twists**: Discover features exclusive to Fakebooc that elevate your social networking.
 
-## Contributing 🤝
 
-Your contributions are what make the community incredible. If you'd like to contribute to **Fakebooc**, please fork the repository and create a pull request, or simply open an issue with the tag "enhancement".
-
-## Good Luck! 🍀
-
-We wish you all the best in your development journey with **Fakebooc**. Dive in, explore, and let's make something amazing together!
+The project initially began in the following repository: [https://github.com/ohadk123/fakebook](https://github.com/ohadk123/fakebook).
+Prior to dividing the web and Android development into two separate repositories,
+all progress was made here. Feel free to explore this repository to view the earlier stages of development.
 
