@@ -7,7 +7,7 @@
     tools:context=".EditPost">
 
     <EditText
-        android:id="@+id/post_content_input"
+        android:id="@+id/post_content"
         android:layout_width="300sp"
         android:layout_height="wrap_content"
         android:layout_marginVertical="30sp"
@@ -40,7 +40,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.64"
         app:layout_constraintStart_toEndOf="@+id/edit_post_btn"
-        app:layout_constraintTop_toBottomOf="@+id/post_content_input"
+        app:layout_constraintTop_toBottomOf="@+id/post_content"
         app:layout_constraintVertical_bias="0.0"
         android:contentDescription="@string/upload_btn_image" />
 
@@ -56,7 +56,7 @@
         android:contentDescription="@string/remove_image_btn" />
 
     <ImageView
-        android:id="@+id/image_preview"
+        android:id="@+id/Update_image_preview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
