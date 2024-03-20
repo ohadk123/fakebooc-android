@@ -19,9 +19,14 @@ Ensure you have **Android Studio** installed on your machine. If not, download i
 
 ### Running the App
 
-1. After the project setup completes, select an emulator or connect your Android device.
-2. Press the `Run 'app'` button (the green triangle) in the toolbar.
-3. Android Studio will build the app and run it on your chosen device/emulator.
+1. **Start the Server**: Before running the app, ensure the server is active. Follow the setup instructions in the server repository to get started. 
+   - Server repository link: [https://github.com/ohadk123/fakebook-server](https://github.com/ohadk123/fakebook-server)
+   
+2. **Choose Your Device**: Once the server is up and running, prepare to launch the app by selecting an emulator or connecting your Android device to your computer.
+
+3. **Launch the App**: Click on the `Run 'app'` button (represented by a green triangle) in the Android Studio toolbar.
+
+4. **Enjoy Your App**: Android Studio will compile the app and deploy it on your selected device or emulator. Now you're ready to explore its features!
 
 ## Features 🌟
 
