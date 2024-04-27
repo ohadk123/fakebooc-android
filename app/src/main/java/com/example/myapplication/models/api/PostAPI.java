@@ -78,7 +78,22 @@ public class PostAPI {
 
     public void updatePost(String pid, JsonObject updatePostBody) {
         String username = TokenClient.getTokenUser();
-        webServiceApi.updatePost(username, pid, updatePostBody).enqueue(new ObjectCallback<>(postData));
+        webServiceApi.updatePost(username, pid, updatePostBody).enqueue(new Callback<Post>() {
+            @Override
+            public void onResponse(Call<Post> call, Response<Post> response) {
+                if (response.isSuccessful()) {
+                    postData.postValue(response.body());
+                } else if (response.code() == 405) {
+                    Toast.makeText(MainActivity.context, "A link you added seems to be harmful, please remove it in order to keep the community safe", Toast.LENGTH_SHORT).show();
+                    postData.postValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Post> call, Throwable t) {
+                Log.d("failure", t.getMessage());
+            }
+        });
     }
 
     public void deletePost(String pid) {
