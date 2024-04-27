@@ -1,9 +1,11 @@
 package com.example.myapplication.models.api;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.myapplication.MainActivity;
 import com.example.myapplication.models.database.daos.PostDao;
 import com.example.myapplication.models.database.entities.Post;
 import com.example.myapplication.models.database.entities.PostList;
@@ -56,7 +58,22 @@ public class PostAPI {
 
     public void createPost(JsonObject createPostBody) {
         String username = TokenClient.getTokenUser();
-        webServiceApi.createPost(username, createPostBody).enqueue(new ObjectCallback<>(postData));
+        webServiceApi.createPost(username, createPostBody).enqueue(new Callback<Post>() {
+            @Override
+            public void onResponse(Call<Post> call, Response<Post> response) {
+                if (response.isSuccessful()) {
+                    postData.postValue(response.body());
+                } else if (response.code() == 405) {
+                    Toast.makeText(MainActivity.context, "A link you added seems to be harmful, please remove it in order to keep the community safe", Toast.LENGTH_SHORT).show();
+                    postData.postValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Post> call, Throwable t) {
+                Log.d("failure", t.getMessage());
+            }
+        });
     }
 
     public void updatePost(String pid, JsonObject updatePostBody) {
